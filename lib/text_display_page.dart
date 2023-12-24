@@ -5,6 +5,7 @@ class LicensePlateScreen extends StatelessWidget {
   // Initialize Firestore instance
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+
   Future<void> getData() async {
     try {
       // Access 'licenseplate' collection

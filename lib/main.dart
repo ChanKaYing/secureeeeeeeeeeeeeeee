@@ -246,7 +246,7 @@ class ResultScreen extends StatefulWidget {
 
   @override
   _ResultScreenState createState() => _ResultScreenState();
-}
+}////
 
 class _ResultScreenState extends State<ResultScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
