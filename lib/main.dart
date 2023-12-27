@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:secureeeeeeeeeeeeeeee/firebase_options.dart';
@@ -45,7 +46,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   late final Future<void> _future;
   CameraController? _cameraController;
   final textRecognizer = TextRecognizer();
-
+  Timer? timer;
 
   @override
   void initState() {
@@ -53,6 +54,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     _future = _requestCameraPermission();
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => _scanImage());
   }
 
   @override
@@ -60,6 +62,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     _stopCamera();
     textRecognizer.close();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -78,8 +81,56 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     }
   }
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String fetchedData = '';
+  String approve = '' ;
+  List<String> scan = [];
+
+  Future<void> fetchData() async {
+    try {
+      int count=0;
+      // Fetching data from the 'licenseplate' collection
+      QuerySnapshot querySnapshot = await _firestore.collection('licenseplate').get();
+      setState(() {
+        fetchedData = '';
+        for (var doc in querySnapshot.docs) {
+          // Accessing the 'plate' field from each document
+          var plate = doc['plate'];
+          fetchedData += 'Plate: $plate\n';
+
+          String oo= plate.toString();
+          print("ooooooooooooooooooooooooL");
+
+          if(scan.contains(oo)){
+            print("approve");
+            approve="Approve!";
+          }
+        }
+      });
+
+      print("LLLLLLLLLLLLLLLLLLLLL");
+      print(scan);
+
+
+    } catch (e) {
+      setState(() {
+        fetchedData = 'Error fetching data: $e';
+      });
+    }
+  }
+
+  String getDatabaseText(){
+    String pp = '';
+    for (int i=0; i<scan.length;i++){
+      pp = pp + scan[i] + "\n";
+    }
+    return pp;
+  }
+
   @override
   Widget build(BuildContext context) {
+    fetchData();
+
     return FutureBuilder(
       future: _future,
       builder: (context, snapshot) {
@@ -111,10 +162,51 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   ),
                   Container(
                     padding: const EdgeInsets.only(bottom: 30.0),
+                    color:Colors.white,
                     child: Center(
-                      child: ElevatedButton(
-                        onPressed: _scanImage,
-                        child: const Text('View scan status'),
+                      child: Container(
+                        padding: const EdgeInsets.only(bottom: 30.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(getDatabaseText()),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      fetchedData.isNotEmpty
+                                          ? fetchedData
+                                          : 'Data is not available yet', // You can adjust the placeholder message here
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(approve
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -122,10 +214,47 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               )
                   : Center(
                 child: Container(
-                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                  child: const Text(
-                    'Camera permission denied',
-                    textAlign: TextAlign.center,
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(getDatabaseText()),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                fetchedData.isNotEmpty
+                                    ? fetchedData
+                                    : 'Data is not available yet', // You can adjust the placeholder message here
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(approve
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -205,23 +334,24 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
 
 
-      List<String> scan = [];
+      scan = [];
       for (int i = 0 ; i<recognizedText.blocks.length; i++ ) {
         scan.add(recognizedText.blocks[i].text);
-       print(scan);
+        print(scan);
 
       }
 
 
 //      print("LLLLLLLLLLLLLLLLLLLLL");
 //      print(recognizedText.text);
-
+/*
       await navigator.push(
         MaterialPageRoute(
           builder: (BuildContext context) =>
               ResultScreen(text: scan),
         ),
       );
+      */
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -238,8 +368,8 @@ class ResultScreen extends StatefulWidget {
     String pp = '';
     for (int i=0; i<text.length;i++){
       pp = pp + text[i];
-  }
-  return pp;
+    }
+    return pp;
   }
 
   const ResultScreen({Key? key, required this.text});

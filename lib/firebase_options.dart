@@ -44,38 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD96a-iUZ8mzBDLnb11Qb3p-YedgbiMbCg',
-    appId: '1:328719602514:web:8e2de960ff9410d884e08b',
-    messagingSenderId: '328719602514',
-    projectId: 'eeeee-6433d',
-    authDomain: 'eeeee-6433d.firebaseapp.com',
-    storageBucket: 'eeeee-6433d.appspot.com',
-    measurementId: 'G-HKGY38JW4N',
+    apiKey: 'AIzaSyAd3Hue83XUE7KP-39ckTeNlSaWj7tEI9U',
+    appId: '1:725233223963:web:b39866f2f557199ec92bbe',
+    messagingSenderId: '725233223963',
+    projectId: 'sgsystem-4bd12',
+    authDomain: 'sgsystem-4bd12.firebaseapp.com',
+    storageBucket: 'sgsystem-4bd12.appspot.com',
+    measurementId: 'G-1M6SKP8RY3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDeRIEBwvMoLIl0rJVaRIAmYVdRns2srLY',
-    appId: '1:328719602514:android:903e83ef3505e78284e08b',
-    messagingSenderId: '328719602514',
-    projectId: 'eeeee-6433d',
-    storageBucket: 'eeeee-6433d.appspot.com',
+    apiKey: 'AIzaSyD4J_FXPPvajCEC_HwfijZRbzQZNAMBkH0',
+    appId: '1:725233223963:android:6e663ff4580a6c31c92bbe',
+    messagingSenderId: '725233223963',
+    projectId: 'sgsystem-4bd12',
+    storageBucket: 'sgsystem-4bd12.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC85nGSHHwTZjQZIxVN3CagTSrVYvCsvaE',
-    appId: '1:328719602514:ios:e6e51623a4bd057984e08b',
-    messagingSenderId: '328719602514',
-    projectId: 'eeeee-6433d',
-    storageBucket: 'eeeee-6433d.appspot.com',
+    apiKey: 'AIzaSyD7UZ3_eEG3_F-J1dh0akGBfE3Hw5vv6_A',
+    appId: '1:725233223963:ios:885122c510beda61c92bbe',
+    messagingSenderId: '725233223963',
+    projectId: 'sgsystem-4bd12',
+    storageBucket: 'sgsystem-4bd12.appspot.com',
     iosBundleId: 'com.example.secureeeeeeeeeeeeeeee',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC85nGSHHwTZjQZIxVN3CagTSrVYvCsvaE',
-    appId: '1:328719602514:ios:e6e51623a4bd057984e08b',
-    messagingSenderId: '328719602514',
-    projectId: 'eeeee-6433d',
-    storageBucket: 'eeeee-6433d.appspot.com',
+    apiKey: 'AIzaSyD7UZ3_eEG3_F-J1dh0akGBfE3Hw5vv6_A',
+    appId: '1:725233223963:ios:885122c510beda61c92bbe',
+    messagingSenderId: '725233223963',
+    projectId: 'sgsystem-4bd12',
+    storageBucket: 'sgsystem-4bd12.appspot.com',
     iosBundleId: 'com.example.secureeeeeeeeeeeeeeee',
   );
 }
